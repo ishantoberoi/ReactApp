@@ -1,0 +1,12 @@
+{
+  "name": "ReactDemo",
+  "version": "1.0.0",
+  "scripts": {
+    "start": "node ./bin/run.js"
+  },
+  "dependencies": {
+    "express": "^4.10.6",
+    "ejs":     "~0.8.5"
+  },
+  "devDependencies": {}
+}

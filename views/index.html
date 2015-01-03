@@ -1,0 +1,86 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<script type="text/javascript" src="http://fb.me/react-0.11.1.js"></script>
+		<script type="text/javascript" src="http://fb.me/JSXTransformer-0.11.1.js"></script>
+	</head>
+	<body>
+		<div id="main-content">
+			<span>Hello World !!! Welcome to : <%= title %></span>
+		</div>
+		<div id="react-contianer"></div>
+		<script type="text/jsx">
+			/** @jsx React.DOM */
+
+			var MessageBox = React.createClass({
+
+				getInitialState : function(){
+					return {
+						isVisible : true,
+						messages : ['hi first message','hi Second message','hi Third message','hi fourth message','hi Fifth message']
+					}
+				},
+
+
+				render : function(){
+
+					var inlineStyles = {
+						display : this.state.isVisible ? 'block' : 'none',
+					};
+
+					var submessages = this.state.messages.map(function(msg){
+						return <SubMessage submessage={msg}></SubMessage>
+					})
+
+					return (
+							<div style={inlineStyles}>
+								<span>{this.state.message}</span>
+								{submessages}
+								<input type="text" ref="newMsgInputBox"/>
+								<div>
+									<input type="button" value="Add Message" onClick={this.handleAdd}/>
+								</div>
+							</div>
+						);
+				},
+
+				handleAdd : function(){
+					var newMsgtxtBox = this.refs.newMsgInputBox.getDOMNode().value;
+					var newMessages = this.state.messages.concat([newMsgtxtBox]);
+					this.setState({
+						messages : newMessages
+					});
+					//console.log(this.refs.newMsgInputBox.getDOMNode());
+				}
+
+			});
+
+
+			var SubMessage = React.createClass({
+
+				propTypes : {
+					"submessage" : React.PropTypes.string.isRequired
+				},
+
+				getDefaultProps : function(){
+					return {
+						"submessage":"I am the default submessage"
+					}
+				},
+
+				render : function(){
+					return (<div>{this.props.submessage}</div>)
+				}
+			})
+
+			React.renderComponent(
+				<MessageBox></MessageBox>,
+				document.getElementById('react-contianer'),
+				function(){
+					console.log('After render the component !!!');
+				});
+				
+
+		</script>
+	</body>
+</html>
