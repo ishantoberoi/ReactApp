@@ -13,89 +13,55 @@
 		<script type="text/jsx">
 			/** @jsx React.DOM */
 
-			var MessageBox = React.createClass({
 
-				getInitialState : function(){
+			var DashBoard = React.createClass({
+
+				componentWillMount : function (){
+					//debugger;
+				},
+
+				componentDidMount : function (){
+					//debugger;
+				},
+
+				componentWillReceiveProps : function (nextProps){
+					console.log(this.state.metric);
+					debugger;
+				},
+
+				shouldComponentUpdate : function (nextProps, nextState){
+					return nextState.metric > 10;
+				},
+
+				getInitialState : function (){
 					return {
-						isVisible : true,
-						messages : ['hi first message','hi Second message','hi Third message','hi fourth message','hi Fifth message']
-					}
-				},
-
-
-				render : function(){
-
-					var inlineStyles = {
-						display : this.state.isVisible ? 'block' : 'none',
+						"metric" : 0
 					};
+				},
 
-					var submessages = this.state.messages.map(function(msg){
-						console.log(this);
-						return <SubMessage submessage={msg} onDelete={this.deleteMesg}></SubMessage>
-					}.bind(this));
+				componentWillUnmount : function(){
+					document.getElementById('jumbotran').removeChild(document.getElementById('unmount-span'));
+					debugger;
+				},
 
-					return (
-							<div style={inlineStyles}>
-								<span>{this.state.message}</span>
-								{submessages}
-								<input type="text" ref="newMsgInputBox"/>
-								<div>
-									<input type="button" value="Add Message" onClick={this.handleAdd}/>
-								</div>
+					render : function (){
+						return (
+							<div id="jumbotran" className="jumbotran">
+								<h3>{this.state.metric}</h3>
+								<span id="unmount-span"> i have to unmount</span>
 							</div>
-						);
-				},
-
-				handleAdd : function(){
-					var newMsgtxtBox = this.refs.newMsgInputBox.getDOMNode().value;
-					var newMessages = this.state.messages.concat([newMsgtxtBox]);
-					this.setState({
-						messages : newMessages
-					});
-					//console.log(this.refs.newMsgInputBox.getDOMNode());
-				},
-
-				deleteMesg : function(msg){
-					var newMessages = _.without(this.state.messages,msg);
-					this.setState({
-						messages : newMessages
-					});
-				},
-
+							);
+					}
 			});
 
 
-			var SubMessage = React.createClass({
-
-				propTypes : {
-					"submessage" : React.PropTypes.string.isRequired
-				},
-
-				getDefaultProps : function(){
-					return {
-						"submessage":"I am the default submessage"
-					}
-				},
-
-				render : function(){
-					return (<div>
-							{this.props.submessage}
-							<input type="button" onClick={this.handleDelete} value="Delete Message"/>
-						</div>)
-				},
-
-				handleDelete : function(e){
-					this.props.onDelete(this.props.submessage);
-				},
-
-			})
-
-			React.renderComponent(
-				<MessageBox></MessageBox>,
-				document.getElementById('react-contianer'),
-				function(){
-					console.log('After render the component !!!');
-				});
+			var dashComponent = React.renderComponent(
+					<DashBoard/>,
+					document.getElementById('react-contianer'),
+					function (){
+						console.log('After component renders');
+					} 
+				);
 				
 
 		</script>
