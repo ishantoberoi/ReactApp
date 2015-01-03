@@ -3,6 +3,7 @@
 	<head>
 		<script type="text/javascript" src="http://fb.me/react-0.11.1.js"></script>
 		<script type="text/javascript" src="http://fb.me/JSXTransformer-0.11.1.js"></script>
+		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/2.4.1/lodash.js"></script>
 	</head>
 	<body>
 		<div id="main-content">
@@ -29,8 +30,9 @@
 					};
 
 					var submessages = this.state.messages.map(function(msg){
-						return <SubMessage submessage={msg}></SubMessage>
-					})
+						console.log(this);
+						return <SubMessage submessage={msg} onDelete={this.deleteMesg}></SubMessage>
+					}.bind(this));
 
 					return (
 							<div style={inlineStyles}>
@@ -51,7 +53,14 @@
 						messages : newMessages
 					});
 					//console.log(this.refs.newMsgInputBox.getDOMNode());
-				}
+				},
+
+				deleteMesg : function(msg){
+					var newMessages = _.without(this.state.messages,msg);
+					this.setState({
+						messages : newMessages
+					});
+				},
 
 			});
 
@@ -69,8 +78,16 @@
 				},
 
 				render : function(){
-					return (<div>{this.props.submessage}</div>)
-				}
+					return (<div>
+							{this.props.submessage}
+							<input type="button" onClick={this.handleDelete} value="Delete Message"/>
+						</div>)
+				},
+
+				handleDelete : function(e){
+					this.props.onDelete(this.props.submessage);
+				},
+
 			})
 
 			React.renderComponent(
